@@ -450,8 +450,26 @@
         <input type="text" id="zip" name="zip" placeholder="10001" required autocomplete="postal-code" />
       </div>
       <div class="checkout-form-group">
-        <label for="payment">Payment Details</label>
-        <input type="text" id="payment" name="payment" placeholder="Card Number •••• •••• •••• ••••" required autocomplete="cc-number" />
+        <h2>Select Payment Method</h2>
+        <div class="payment-methods">
+          <label>
+            <input type="radio" name="payment" value="upi" onchange="togglePaymentFields(this.value)"> UPI
+          </label>
+          <label>
+            <input type="radio" name="payment" value="paypal" onchange="togglePaymentFields(this.value)"> PayPal
+          </label>
+          <label>
+            <input type="radio" name="payment" value="credit" onchange="togglePaymentFields(this.value)"> Credit Card
+          </label>
+          <label>
+            <input type="radio" name="payment" value="cod" onchange="togglePaymentFields(this.value)"> Cash on Delivery
+          </label>
+        </div>
+        
+        <div id="payment-fields" style="margin-top: 15px;"></div>
+        
+        <button onclick="confirmOrder()">Confirm Order</button>
+        
       </div>
       <div style="display: flex; justify-content: flex-end;">
         <button type="submit" class="confirm-btn">Place Order</button>
@@ -660,6 +678,40 @@
   renderProducts();
   renderCart();
   updateCartCount();
+
+  function togglePaymentFields(method) {
+    const container = document.getElementById("payment-fields");
+    container.innerHTML = ""; // Clear previous fields
+
+    if (method === "upi") {
+      container.innerHTML = `
+        <label for="upi-id">Enter your UPI ID:</label>
+        <input type="text" id="upi-id" name="upi-id" placeholder="example@upi">
+      `;
+    } else if (method === "paypal") {
+      container.innerHTML = `
+        <label for="paypal-email">Enter your PayPal Email:</label>
+        <input type="email" id="paypal-email" name="paypal-email" placeholder="you@example.com">
+      `;
+    } else if (method === "credit") {
+      container.innerHTML = `
+        <label for="card-number">Credit Card Number:</label>
+        <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456"><br>
+        <label for="card-expiry">Expiry Date:</label>
+        <input type="text" id="card-expiry" name="card-expiry" placeholder="MM/YY"><br>
+        <label for="card-cvv">CVV:</label>
+        <input type="text" id="card-cvv" name="card-cvv" placeholder="123">
+      `;
+    } else if (method === "cod") {
+      container.innerHTML = `
+        <p>Cash on Delivery selected. You will pay when the order is delivered.</p>
+      `;
+    }
+  }
+
+  function confirmOrder() {
+    alert("Order confirmed! Thank you for your purchase.");
+  }
 </script>
 
 </body>
